@@ -1,66 +1,83 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Customer Feedback Module
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+#### To get started
+- Run `composer install` to install dependencies
+- Run `php artisan migrate` to run migrations
+- Run `php artisan db:seed` to seed some dat into the database.
+- And `php artisan serve` to serve the app on localhost
 
-## About Laravel
+## Assumptions
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- ### Database Migrations
+  - SQLite database for easy database setup. File also included in the database directory
+  - Migrations have been run already
+  - Data seeded using `php artisan db:seed`
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- ### CORS configuration
+  - assumes stateful domains will be localhost:5173, localhost:5174 or localhost:5175.
+  - Hardcoded stateful domains on the backend are placed in the env file
+  - Those ports are typically used my vite to launch apps.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- ### Backend validation is sufficient
+  - Assumes users will not bypass validation even if frontend form is tampered with.
+  - While the backend has proper validation in place, the frontend relies on this validation and it's own validation was not implemented
+  - We can save server roundtrip time & resources by implementing client-side validation
 
-## Learning Laravel
+- ### Network timeouts
+  - Assumes request/responses will always complete without network timeouts
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- ### Multiple/Duplicate Feedback is OK
+  - Assumes users can submit multiple and duplicate feedback
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- ### User authentication/authorization
+  - Assumes  there's no real need for authentication.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- ### Data Handling
+  - Assumes only 10 entries will be fetch
 
-## Laravel Sponsors
+- ### Correct Data Types and Format (frontend)
+  - Assumes not all data needs strict types
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- ### API routes & documentation
+  - Assumes there's no need for API documentation
+  - Exposed routes instead of using Laravel's Controller API resource routes
 
-### Premium Partners
+- ### .env inclusion
+  - Assumes .env is added for simplicity
+  - This is a bad practice in real world and should not happen (.env.example should be used to add required variables)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## Edge Cases
 
-## Contributing
+- ### Network connectivity
+    - Slow connections leading to frontend timeout
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- ### User behavior
+    - Disabling JavaScript to bypass validation
+    - Using the developer console to manipulate data on the frontend
 
-## Code of Conduct
+- ### Security
+    - CSRF attacks via the form
+    - Bot attacks/spamming on form
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+## Improvements
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- ##### User Authentication and Authorization
 
-## License
+- ##### Frontend and Backend validation
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- ##### API Idempotency
+
+- ##### Graceful error handling on both frontend and backend
+
+- ##### API versioning
+
+- ##### API rate limiting
+
+- ##### Pagination of large amount of data
+
+- ##### .env files on the frontend
+
+- ##### CAPTCHA & CSRF protection to form
+
+- ##### Content Security Policy (CSP) to mitigate XSS
